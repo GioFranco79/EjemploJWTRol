@@ -5,7 +5,8 @@ import { sequelize } from "../database/db.config.js";
 const User = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
-        primaryKey: true    
+        autoIncrement: true,
+        primaryKey: true        
     },
     email:{
         type: DataTypes.STRING(50),
@@ -28,3 +29,5 @@ const User = sequelize.define('User', {
 export{
     User
 }
+
+//User.sync();

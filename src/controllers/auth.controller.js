@@ -5,7 +5,7 @@ import { generateJWT } from '../helpers/generateJWT.js';
 
 const loginUser = async (req = request, res = response) => {
     const { email, password } = req.body;
-    const user = await Usuario.findOne({ where: {email} });
+    const user = await User.findOne({ where: {email} });
     if (!user){
         return res.json({
             msg: 'Usuario o contraseña invalidas.'
@@ -29,7 +29,7 @@ const createUser = async (req = request, res = response) => {
 
 }
 
-
 export {
-    loginUser
+    loginUser,
+    createUser
 }

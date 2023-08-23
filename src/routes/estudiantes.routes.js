@@ -7,7 +7,7 @@ const routerEstudiantes = Router();
 
 routerEstudiantes.post('/', [
     validateJWT,
-    validateRols('ADMIN', 'USER')
+    validateRols('ADMIN')
 ], listadoEstudiantes);
 
 export {

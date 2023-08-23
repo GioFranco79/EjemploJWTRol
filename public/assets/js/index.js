@@ -65,8 +65,10 @@ const listadoEstudiantes = async () => {
       }
 
       const response = await fetch(url, opciones);
-      const estudiantes = await response.json();
-      console.log(estudiantes);
+      const estudiantes = await response.json();     
+      if (response.status == 401){
+            alert(estudiantes.msg);
+      }
       body.innerHTML= '';
       if (estudiantes) {      
             estudiantes.forEach(fila => {

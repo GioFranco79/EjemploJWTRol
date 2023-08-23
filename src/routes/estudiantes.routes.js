@@ -1,10 +1,14 @@
 import { Router } from "express";
 import { listadoEstudiantes } from "../controllers/estudiantes.controller.js";
-
+import { validateJWT } from "../middlewares/validateJWT.js";
+import { validateRols } from "../middlewares/validateROL.js";
 
 const routerEstudiantes = Router();
 
-routerEstudiantes.post('/', listadoEstudiantes);
+routerEstudiantes.post('/', [
+    validateJWT,
+    validateRols('ADMIN', 'USER')
+], listadoEstudiantes);
 
 export {
     routerEstudiantes

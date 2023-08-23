@@ -26,7 +26,22 @@ const loginUser = async (req = request, res = response) => {
 
 const createUser = async (req = request, res = response) => {
     const { email, password, rol } = req.body;
-
+    const user = {
+        email,
+        password,
+        rol
+    }
+    const genPass = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password,genPass);
+    try {
+        const userCreated = await User.create(user);
+        userCreated.password = "**********";
+        res.json(userCreated);
+    } catch (error) {
+        res.status(500).json({
+            msg: 'No se pudo crear el usuario'
+        })
+    }
 }
 
 export {

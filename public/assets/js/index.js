@@ -1,4 +1,49 @@
+let miToken = '';
 const btnFiltrar = document.querySelector('#btnFiltrar');
+const btnLoguear = document.querySelector('#btnLoguear');
+
+const validateEmail = (email) => {
+      const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+      if (validEmail.test(email)) {
+            return true;
+      } else {
+            return false;
+      }
+}
+
+const logueandose = async () => {
+      const urllogin = 'http://localhost:8080/login/signin';
+      const email = document.querySelector('#txtCorreo').value;
+      const password = document.querySelector('#txtPassword').value;
+      if (!validateEmail(email)) {
+            alert("Error! email invalido (ej. mimail@correo.com)");
+            return;
+      }
+      const datos = {
+            email,
+            password
+      }
+      const opciones = {
+            method: 'POST',
+            headers: {
+                  'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datos)
+      }
+      const response = await fetch(urllogin, opciones);
+      const { token, msg } = await response.json();
+      console.log(msg);
+      if (!token) {
+            alert(msg);
+            console.log(msg);
+      } else {
+            miToken = token;
+            $("#loginPrincipal").hide();
+            $("#filtros").show();
+            $("#tablita").show();
+            llenaCombos(token);
+      }
+}
 
 const listadoEstudiantes = async () => {
       const body = document.querySelector('#body');
@@ -9,13 +54,16 @@ const listadoEstudiantes = async () => {
             region,
             curso
       }
+
       const opciones = {
             method: 'POST',
             headers: {
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
+                  'Authorization': miToken
             },
             body: JSON.stringify(datos)
       }
+
       const response = await fetch(url, opciones);
       const estudiantes = await response.json();
       console.log(estudiantes);
@@ -46,8 +94,15 @@ const listadoEstudiantes = async () => {
       }
 }
 
-const llenaCombos = async () => {
+const llenaCombos = async (token) => {
       const urlcursos = 'http://localhost:8080/api/cursos';
+      const opciones = {
+            method: 'GET',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': token
+            }
+      }      
       const promesaCursos = await fetch(urlcursos);
       const cursos = await promesaCursos.json();
 
@@ -79,9 +134,10 @@ const llenaCombos = async () => {
             option.text = curso.codigo_curso;
             ComboCursos.appendChild(option);
       });
+      listadoEstudiantes(token);
 }
 
+$("#filtros").hide();
+$("#tablita").hide();
 btnFiltrar.addEventListener('click', listadoEstudiantes);
-
-llenaCombos();
-listadoEstudiantes();
+btnLoguear.addEventListener('click', logueandose);

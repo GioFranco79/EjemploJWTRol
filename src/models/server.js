@@ -4,6 +4,7 @@ import cors from 'cors';
 import { routerEstudiantes } from '../routes/estudiantes.routes.js';
 import { routerRegiones } from '../routes/regiones.routes.js';
 import { routerCursos } from '../routes/cursos.routes.js';
+import { routerUser } from '../routes/user.routes.js';
 
 export default class Server {
 
@@ -23,7 +24,7 @@ export default class Server {
     }
 
     routes() {
-        this.app.use('/login', routesLogin);
+        this.app.use('/login', routerUser);
         this.app.use('/api/estudiantes', routerEstudiantes);
         this.app.use('/api/regiones', routerRegiones);
         this.app.use('/api/cursos', routerCursos);

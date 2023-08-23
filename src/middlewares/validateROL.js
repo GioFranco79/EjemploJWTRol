@@ -8,3 +8,7 @@ const validateRols = (...rest) => {
         next();
     }
 }
+
+export {
+    validateRols
+}

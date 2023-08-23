@@ -6,3 +6,6 @@ const routerUser = Router();
 routerUser.post('/signin', loginUser);
 routerUser.post('/signup', createUser);
 
+export {
+    routerUser
+}
